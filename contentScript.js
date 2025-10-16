@@ -19,6 +19,10 @@ const SOUND_ATTR = 'Mute';
 const SIZE_ATTR = 'Default view';
 const FULL_SCREEN_ATTR = 'Full screen';
 
+const MAX_ITERATIONS = 3;
+let interval = null;
+let currentIteration = 0;
+
 const SVG_HEADER = '<svg class="no-padding" height="100%" viewBox="0 0 36 36" width="100%"';
 const SIDE_BACKGROUND_STYLES = 'position: absolute; width: 12px; height: 100%; background: black; ';
 
@@ -156,16 +160,43 @@ const callback = (mutationsList, observer) => {
     }
 };
 
-if (secondaryPage) {
-    const config = {attributes: false, childList: true, subtree: true};
+function startProcessingPlugin(contentProp) {
+    const content = contentProp || document.querySelector(SECONDARY_PAGE_SELECTOR);
 
-    const observer = new MutationObserver(callback);
+    if (!content) {
+        if (!interval) {
+            interval = setInterval(() => {
+                currentIteration++;
+                const newContent = document.querySelector(SECONDARY_PAGE_SELECTOR);
 
-    observer.observe(secondaryPage, config);
+                if (newContent) {
+                    startProcessingPlugin(newContent);
+                    clearInterval(interval);
+                    return;
+                }
 
-    const initialControls = document.querySelectorAll(CONTROL_CLASS);
+                if (currentIteration >= MAX_ITERATIONS) {
+                    clearInterval(interval);
+                }
+            }, 500);
+        }
+        return;
+    }
+
+    const initialControls = content.querySelectorAll(CONTROL_CLASS);
+
     if (initialControls.length > 0) {
         initialControls.forEach(modifyControls);
+    }
+
+    const config = { attributes: false, childList: true, subtree: true };
+    const observer = new MutationObserver(callback);
+
+    observer.observe(content, config);
+
+    if (initialControls.length > 0) {
         observer.disconnect();
     }
 }
+
+startProcessingPlugin();
