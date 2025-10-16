@@ -1,0 +1,50 @@
+.old-control-style {
+    background: black !important;
+}
+
+.no-padding {
+    padding: 0!important;
+}
+
+.next-track-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    width: 48px;
+}
+
+.ytp-chrome-controls {
+    container-type: inline-size; container-name: ytp-controls;
+}
+
+.ytp-prev-button {
+    padding-right: 5px !important;
+}
+
+.ytp-next-button, .ytp-prev-button {
+    margin-top: 5px !important; overflow: visible !important;
+}
+
+@container ytp-controls (width > 1276px) {
+    .next-track-wrapper {
+        height: 70px; width: 70px;
+    }
+
+    .ytp-next-button, .ytp-prev-button {
+        margin-top: 1px !important;
+    }
+
+    .ytp-prev-button {
+        padding-right: 20px !important;
+    }}
+
+@container ytp-controls (width > 1855px) {
+    .next-track-wrapper {
+        height: 78px; width: 78px;
+    }
+
+    .ytp-next-button, .ytp-prev-button {
+        margin-top: 9px !important;
+    }
+}
