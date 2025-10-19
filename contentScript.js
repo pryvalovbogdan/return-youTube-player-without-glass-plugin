@@ -18,6 +18,8 @@ const ATTRIBUTE_TOOLTIP_SELECTOR = 'data-title-no-tooltip';
 const SOUND_ATTR = 'Mute';
 const SIZE_ATTR = 'Default view';
 const FULL_SCREEN_ATTR = 'Full screen';
+const ARIA_SUBTITLE_ATTR = 'aria-pressed';
+const ARIA_SUBTITLE_VALUE_ATTR = 'true';
 
 const MAX_ITERATIONS = 3;
 let interval = null;
@@ -28,7 +30,7 @@ const SIDE_BACKGROUND_STYLES = 'position: absolute; width: 12px; height: 100%; b
 
 const svgs = {
     volumeMuted: `<div class="${MODIFIED_CLASS} Mute" style="display: contents">${SVG_HEADER}> <path d="M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 ZM19,11.29 C21.89,12.15 24,14.83 24,18 C24,21.17 21.89,23.85 19,24.71 L19,26.77 C23.01,25.86 26,22.28 26,18 C26,13.72 23.01,10.14 19,9.23 L19,11.29 Z" fill="#fff"></path></svg></div>`,
-    volumeUnmuted: `<div class="${MODIFIED_CLASS} Unmute" style="display: contents">${SVG_HEADER}> <use class="ytp-svg-shadow" xlink:href="#ytp-id-17"></use><path class="ytp-svg-fill" d="m 21.48,17.98 c 0,-1.77 -1.02,-3.29 -2.5,-4.03 v 2.21 l 2.45,2.45 c .03,-0.2 .05,-0.41 .05,-0.63 z m 2.5,0 c 0,.94 -0.2,1.82 -0.54,2.64 l 1.51,1.51 c .66,-1.24 1.03,-2.65 1.03,-4.15 0,-4.28 -2.99,-7.86 -7,-8.76 v 2.05 c 2.89,.86 5,3.54 5,6.71 z M 9.25,8.98 l -1.27,1.26 4.72,4.73 H 7.98 v 6 H 11.98 l 5,5 v -6.73 l 4.25,4.25 c -0.67,.52 -1.42,.93 -2.25,1.18 v 2.06 c 1.38,-0.31 2.63,-0.95 3.69,-1.81 l 2.04,2.05 1.27,-1.27 -9,-9 -7.72,-7.72 z m 7.72,.99 -2.09,2.08 2.09,2.09 V 9.98 z" id="ytp-id-17"></path></svg></div>`,
+    volumeUnmuted: `<div class="${MODIFIED_CLASS} Unmute" style="display: contents">${SVG_HEADER}> <path class="ytp-svg-fill" d="m 21.48,17.98 c 0,-1.77 -1.02,-3.29 -2.5,-4.03 v 2.21 l 2.45,2.45 c .03,-0.2 .05,-0.41 .05,-0.63 z m 2.5,0 c 0,.94 -0.2,1.82 -0.54,2.64 l 1.51,1.51 c .66,-1.24 1.03,-2.65 1.03,-4.15 0,-4.28 -2.99,-7.86 -7,-8.76 v 2.05 c 2.89,.86 5,3.54 5,6.71 z M 9.25,8.98 l -1.27,1.26 4.72,4.73 H 7.98 v 6 H 11.98 l 5,5 v -6.73 l 4.25,4.25 c -0.67,.52 -1.42,.93 -2.25,1.18 v 2.06 c 1.38,-0.31 2.63,-0.95 3.69,-1.81 l 2.04,2.05 1.27,-1.27 -9,-9 -7.72,-7.72 z m 7.72,.99 -2.09,2.08 2.09,2.09 V 9.98 z" id="ytp-id-17"></path></svg></div>`,
 
     nextTrack: `<div class="next-track-wrapper">${SVG_HEADER}> <path class="ytp-svg-fill" d="M 12,24 20.5,18 12,12 V 24 z M 22,12 v 12 h 2 V 12 h -2 z" id="ytp-id-13"></path></svg></div>`,
     prevTrack: `<div class="next-track-wrapper">${SVG_HEADER}> <path class="ytp-svg-fill" d="m 12,12 h 2 v 12 h -2 z m 3.5,6 8.5,6 V 12 z" id="ytp-id-11"></path></svg></div>`,
@@ -45,10 +47,10 @@ const svgs = {
     subtitlesOff: `<div class="${MODIFIED_CLASS} false" style="display: contents">${SVG_HEADER} fill-opacity="0.3"><path d="M11,11 C9.89,11 9,11.9 9,13 L9,23 C9,24.1 9.89,25 11,25 L25,25 C26.1,25 27,24.1 27,23 L27,13 C27,11.9 26.1,11 25,11 L11,11 Z M17,17 L15.5,17 L15.5,16.5 L13.5,16.5 L13.5,19.5 L15.5,19.5 L15.5,19 L17,19 L17,20 C17,20.55 16.55,21 16,21 L13,21 C12.45,21 12,20.55 12,20 L12,16 C12,15.45 12.45,15 13,15 L16,15 C16.55,15 17,15.45 17,16 L17,17 L17,17 Z M24,17 L22.5,17 L22.5,16.5 L20.5,16.5 L20.5,19.5 L22.5,19.5 L22.5,19 L24,19 L24,20 C24,20.55 23.55,21 23,21 L20,21 C19.45,21 19,20.55 19,20 L19,16 C19,15.45 19.45,15 20,15 L23,15 C23.55,15 24,15.45 24,16 L24,17 L24,17 Z" fill="#fff" id="ytp-id-17"></path></svg></div>`,
 };
 
-const secondaryPage = document.querySelector(SECONDARY_PAGE_SELECTOR);
-
 const setupButtonObserver = (btn, getNewHtml, getStateAttribute, childList = false) => {
-    if (!btn) return;
+    if (!btn) {
+        return;
+    }
 
     const observerCallback = () => {
         const stateAttr = getStateAttribute(btn);
@@ -62,7 +64,8 @@ const setupButtonObserver = (btn, getNewHtml, getStateAttribute, childList = fal
         btn.innerHTML = getNewHtml(btn);
 
         const newSvg = btn.querySelector(`.${MODIFIED_CLASS}`);
-        if(newSvg) {
+
+        if (newSvg) {
             newSvg.classList.add(MODIFIED_CLASS);
             newSvg.classList.add(stateClass);
         }
@@ -78,41 +81,37 @@ const setupButtonObserver = (btn, getNewHtml, getStateAttribute, childList = fal
     });
 };
 
-const handleAttachIconBasedOnTooltipAtr = (item, className, svgLeft, svgRight, attr, childList) => {
+const handleAttachIconBasedOnTooltipAtr = (item, className, svgLeft, svgRight, attr, childList, tooltipSelector = ATTRIBUTE_TOOLTIP_SELECTOR) => {
     const soundBtn = item.querySelector(className);
-    if (!soundBtn) return;
 
-    const getHtml = (btn) => {
-        const isMuted = btn.getAttribute(ATTRIBUTE_TOOLTIP_SELECTOR) === attr;
+    if (!soundBtn) {
+        return;
+    }
+
+    const getHtml = btn => {
+        const isMuted = btn.getAttribute(tooltipSelector) === attr;
+
         return isMuted ? svgLeft : svgRight;
     };
 
-    const getStateAttr = (btn) => btn.getAttribute(ATTRIBUTE_TOOLTIP_SELECTOR);
+    const getStateAttr = btn => btn.getAttribute(tooltipSelector);
+
     setupButtonObserver(soundBtn, getHtml, getStateAttr, childList);
-}
-
-const handleSubtitlesButton = (item) => {
-    const subtitlesBtn = item.querySelector(SUBTITLES_BUTTON_CLASS);
-    if (!subtitlesBtn) return;
-
-    const getHtml = (btn) => {
-        const isSubtitlesOn = btn.getAttribute('aria-pressed') === 'true';
-        return isSubtitlesOn ? svgs.subtitlesOn : svgs.subtitlesOff;
-    };
-
-    const getStateAttr = (btn) => btn.getAttribute('aria-pressed');
-    setupButtonObserver(subtitlesBtn, getHtml, getStateAttr);
 };
 
-const modifyControls = (item) => {
+const modifyControls = item => {
     if (item.classList.contains(PROCESSED_CLASS)) {
         return;
     }
 
     const bgLeft = document.createElement('div');
+
     bgLeft.style.cssText = SIDE_BACKGROUND_STYLES + 'left: -12px;';
     const bgRight = document.createElement('div');
+
     bgRight.style.cssText = SIDE_BACKGROUND_STYLES + 'right: -12px;';
+
+    document.querySelector('.ytp-chrome-bottom').style.opacity = '1';
 
     item.append(bgLeft);
     item.append(bgRight);
@@ -146,8 +145,25 @@ const modifyControls = (item) => {
 
     handleAttachIconBasedOnTooltipAtr(item, VOLUME_ICON_CLASS, svgs.volumeMuted, svgs.volumeUnmuted, SOUND_ATTR, true);
     handleAttachIconBasedOnTooltipAtr(item, SIZE_BUTTON_CLASS, svgs.sizeDefault, svgs.sizeTheater, SIZE_ATTR, false);
-    handleAttachIconBasedOnTooltipAtr(item, FULLSCREEN_BUTTON_CLASS, svgs.fullScreen, svgs.exitFullScreen, FULL_SCREEN_ATTR, false);
-    handleSubtitlesButton(item);
+
+    handleAttachIconBasedOnTooltipAtr(
+        item,
+        FULLSCREEN_BUTTON_CLASS,
+        svgs.fullScreen,
+        svgs.exitFullScreen,
+        FULL_SCREEN_ATTR,
+        false,
+    );
+
+    handleAttachIconBasedOnTooltipAtr(
+        item,
+        SUBTITLES_BUTTON_CLASS,
+        svgs.subtitlesOn,
+        svgs.subtitlesOff,
+        ARIA_SUBTITLE_VALUE_ATTR,
+        false,
+        ARIA_SUBTITLE_ATTR
+    );
 };
 
 const callback = (mutationsList, observer) => {
@@ -172,6 +188,7 @@ function startProcessingPlugin(contentProp) {
                 if (newContent) {
                     startProcessingPlugin(newContent);
                     clearInterval(interval);
+
                     return;
                 }
 
@@ -180,6 +197,7 @@ function startProcessingPlugin(contentProp) {
                 }
             }, 500);
         }
+
         return;
     }
 
