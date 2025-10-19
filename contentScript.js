@@ -105,13 +105,10 @@ const modifyControls = item => {
     }
 
     const bgLeft = document.createElement('div');
-
-    bgLeft.style.cssText = SIDE_BACKGROUND_STYLES + 'left: -12px;';
     const bgRight = document.createElement('div');
 
+    bgLeft.style.cssText = SIDE_BACKGROUND_STYLES + 'left: -12px;';
     bgRight.style.cssText = SIDE_BACKGROUND_STYLES + 'right: -12px;';
-
-    document.querySelector('.ytp-chrome-bottom').style.opacity = '1';
 
     item.append(bgLeft);
     item.append(bgRight);
