@@ -15,20 +15,29 @@
 }
 
 .ytp-chrome-controls {
-    container-type: inline-size; container-name: ytp-controls;
-}
-
-.ytp-prev-button {
-    padding-right: 5px !important;
+    container-name: ytp-controls;
+    container-type: size;
 }
 
 .ytp-next-button, .ytp-prev-button {
-    margin-top: 5px !important; overflow: visible !important;
+    overflow: visible !important;
 }
 
-@container ytp-controls (width > 1276px) {
+@container ytp-controls (block-size > 55px) {
+    .ytp-prev-button {
+        padding-right: 5px !important;
+    }
+
+    .ytp-next-button, .ytp-prev-button {
+        margin-top: 5px !important;
+        margin-left: 0 !important;
+    }
+}
+
+@container ytp-controls (width > 1276px) and (block-size > 55px) {
     .next-track-wrapper {
-        height: 70px; width: 70px;
+        height: 70px;
+        width: 70px;
     }
 
     .ytp-next-button, .ytp-prev-button {
@@ -37,14 +46,23 @@
 
     .ytp-prev-button {
         padding-right: 20px !important;
-    }}
+    }
+}
 
-@container ytp-controls (width > 1855px) {
+@container ytp-controls (width > 1855px) and (block-size > 55px) {
     .next-track-wrapper {
-        height: 78px; width: 78px;
+        height: 78px;
+        width: 78px;
     }
 
     .ytp-next-button, .ytp-prev-button {
         margin-top: 9px !important;
+    }
+}
+
+@container ytp-controls (width > 1852px) and (block-size > 47px) and (block-size < 55px)  {
+    .next-track-wrapper {
+        height: 56px;
+        width: 56px;
     }
 }
