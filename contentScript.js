@@ -111,8 +111,6 @@ const modifyControls = item => {
 
     bgRight.style.cssText = SIDE_BACKGROUND_STYLES + 'right: -12px;';
 
-    document.querySelector('.ytp-chrome-bottom').style.opacity = '1';
-
     item.append(bgLeft);
     item.append(bgRight);
     item.classList.add(PROCESSED_CLASS);
