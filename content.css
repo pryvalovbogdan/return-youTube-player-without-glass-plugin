@@ -1,68 +1,72 @@
 .old-control-style {
-    background: black !important;
+  background: black !important;
 }
 
 .no-padding {
-    padding: 0!important;
+  padding: 0 !important;
 }
 
 .next-track-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 48px;
-    width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: 48px;
 }
 
 .ytp-chrome-controls {
-    container-name: ytp-controls;
-    container-type: size;
+  container-name: ytp-controls;
+  container-type: size;
 }
 
-.ytp-next-button, .ytp-prev-button {
-    overflow: visible !important;
+.ytp-next-button,
+.ytp-prev-button {
+  overflow: visible !important;
 }
 
 @container ytp-controls (block-size > 55px) {
-    .ytp-prev-button {
-        padding-right: 5px !important;
-    }
+  .ytp-prev-button {
+    padding-right: 5px !important;
+  }
 
-    .ytp-next-button, .ytp-prev-button {
-        margin-top: 5px !important;
-        margin-left: 0 !important;
-    }
+  .ytp-next-button,
+  .ytp-prev-button {
+    margin-top: 5px !important;
+    margin-left: 0 !important;
+  }
 }
 
 @container ytp-controls (width > 1276px) and (block-size > 55px) {
-    .next-track-wrapper {
-        height: 70px;
-        width: 70px;
-    }
+  .next-track-wrapper {
+    height: 70px;
+    width: 70px;
+  }
 
-    .ytp-next-button, .ytp-prev-button {
-        margin-top: 1px !important;
-    }
+  .ytp-next-button,
+  .ytp-prev-button {
+    margin-top: 1px !important;
+  }
 
-    .ytp-prev-button {
-        padding-right: 20px !important;
-    }
+  .ytp-prev-button {
+    padding-right: 20px !important;
+  }
 }
 
 @container ytp-controls (width > 1855px) and (block-size > 55px) {
-    .next-track-wrapper {
-        height: 78px;
-        width: 78px;
-    }
+  .next-track-wrapper {
+    height: 78px;
+    width: 78px;
+  }
 
-    .ytp-next-button, .ytp-prev-button {
-        margin-top: 9px !important;
-    }
+  .ytp-next-button,
+  .ytp-prev-button {
+    margin-top: 9px !important;
+  }
 }
 
-@container ytp-controls (width > 1852px) and (block-size > 47px) and (block-size < 55px)  {
-    .next-track-wrapper {
-        height: 56px;
-        width: 56px;
-    }
+@container ytp-controls (width > 1852px) and (block-size > 47px) and (block-size < 55px) {
+  .next-track-wrapper {
+    height: 56px;
+    width: 56px;
+  }
 }
